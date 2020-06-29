@@ -10,7 +10,7 @@
 This repository contains the codes that replicate the figures and tables presented in the paper "Transforming Agriculture through Savings: Experimental Evidence from Mozambique" (2020) by Paul Christian, Steven Glover, Florence Kondylis, Valerie Mueller, Matteo Ruzzante and Astrid Zwager.
 
 ## Read First
-The whole analysis in the paper can be rerun by using the script `MAIN_proirri.do`. It is only necessary to add your computer's username and path to the cloned replication folder(s) in line 97-100 of such do-file in *PART 1*.
+The whole analysis in the paper can be rerun by using the script `MAIN_proirri.do`, which is in the [Dofiles](https://github.com/dime-worldbank/moz-proirri-savings/tree/master/DataWork/Dofiles) subfolder. It is only necessary to add your computer's username and path to the cloned replication folder(s) in line 97-100 of such do-file in *PART 1*.
 You can select which section(s) to run by editing the locals in the preamble of the do-file. Make sure to run the *packages* section &ndash; *PART 0* to install all necessary packages before running the other sections.
 
 The main script will take around a full day on a reasonable cluster. Without considering the do-files using bootstrapping replications (see section *Code Process* below), it would take around 3 minutes.
@@ -31,7 +31,7 @@ Namely, we apply the following pattern to inform variable naming:
 - `bl_` for association and household baseline census;
 - `el_` for household endline survey.
 
-You can find a more detailed description of all the variables employed in the data analysis, especially with regard to variables constructed using survey data, [here](https://github.com/dime-worldbank/moz-proirri-savings/DataWork/Documentation).
+You can find a more detailed description of all the variables employed in the data analysis, especially with regard to variables constructed using survey data, [here](https://github.com/dime-worldbank/moz-proirri-savings/tree/master/DataWork/Documentation).
 
 
 ##  Code Process
@@ -41,7 +41,7 @@ The latter do-file estimates the program impact on secondary outcomes from house
 All do-files use the final dataset, `PROIRRI Financial Literacy - Savings paper data.dta`.
 All tables and figures were included &ndash; without further editing &ndash; in the TeX document containing the current version of the paper.
 
-You can find a more detailed description of each do-file's inputs and outputs [here](https://github.com/dime-worldbank/moz-proirri-savings/DataWork/Dofiles).
+You can find a more detailed description of each do-file's inputs and outputs [here](https://github.com/dime-worldbank/moz-proirri-savings/tree/master/DataWork/Dofiles).
 
 -----------------------------------------------------------------------------------------------------
 
