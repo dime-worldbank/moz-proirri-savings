@@ -9,9 +9,9 @@
 ********************************************************************************
 	
 		WRITTEN BY:			Matteo Ruzzante [mruzzante@worldbank.org]
-		REVIEWED BY:			
+		REVIEWED BY:		Benjamin Daniels	
 		
-		Last update on:		July 2020
+		Last update on:		August 2020
 						
 			PART 0: Settings
 			PART 1:	Folder paths
@@ -22,45 +22,41 @@
  							 Select sections to run							   
 -------------------------------------------------------------------------------*/
 	
-	local packages		1		//install or update packages
 	local analysis		1		//produce tables and figures in the main text of the paper
 	local appendix		1		//produce tables and figures in the appendix of the paper
 	
 ********************************************************************************
-*          PART 0:  INSTALL PACKAGES AND STANDARDIZE SETTINGS				   *
+*        				  PART 0:  STANDARDIZE SETTINGS						   *
 ********************************************************************************
 {		
-	if `packages' {
-	
-		* List all packages that this project requires
-		#d	;
+   /* The following packages that this project requires were installed,
+	* on the repo directory set below,
+	* on 8/11/2020, 4.11AM EST
+	* (this is done to avoid that new versions of these packages are installed
+	*  by the user, possibly resulting in issues of reproducibility)
+	* These packages are loaded as adofiles later in this dofile
+	#d	;
 		
-			local packageList
-							  dataout
-							  distinct
-							  estout
-							  ftools   	//needed for 'reghdfe'
-							  keeporder
-							  iefieldkit
-							  ietoolkit
-							  reghdfe
-							  ritest
-							  winsor2
-							  wyoung
-			;
-		#d	cr
-	
-		foreach  package of local packageList {
+		local packageList
+						  dataout
+						  distinct
+						  estout
+						  ftools   	//needed for 'reghdfe'
+						  keeporder
+						  iefieldkit
+						  ietoolkit
+						  reghdfe
+						  ritest
+						  winsor2
+						  wyoung
+		;
+	#d	cr
+
+	foreach  package of local packageList {
 		
-			ssc  install `package', replace
-		}
-		
-		* Force an update
-		ftools  , compile
-		reghdfe , compile
-		//solve issues with estimations based on previous versions
-		//namely, error "class FixedEffects undefined" may arise
+		ssc  install `package', replace
 	}
+	*/
 	
 	* Set key globals for computation
 	global repsNum   	10000		//number of replications for randomization inference estimations
@@ -83,6 +79,7 @@
 *						PART 1:  SET FOLDER PATH GLOBALS					   *
 ********************************************************************************
 {
+	
 	* Directory (root folder) 
 	* ---------
 	
@@ -124,14 +121,20 @@
 		cap mkdir		   "${out}"
 		cap mkdir		   "${out_tab}"
 		cap mkdir		   "${out_fig}"
+	
+	
+	* Reset Stata's system directories
+	sysdir set PLUS 	  "${do}/ado/"
+	sysdir set PERSONAL   "${do}/"	
 }
 	
 ********************************************************************************
 *							PART 2:  RUN DO FILES							   *
 ******************************************************************************** 
 {	
+	
 	* Set default graphical options
-	set scheme 			 	s2color
+	set scheme 			 	s2color , perm
 	global 		  fontType "Palatino Linotype"
 	gr set window fontface "${fontType}"
 	gr set eps 	  fontface "${fontType}"
@@ -222,6 +225,21 @@
 		
 	#d	cr
 }				
+	
+	* Load ado files stored locally (no need of internet connections to do so)
+	local   subDirs : dir  "${do}/ado/" dirs "*"								//Get list of sub-directories
+	local   subDirs = subinstr(`" `sudDirs' "', `"""' , "" , .)
+	
+	foreach subDir of local subDirs {
+	
+		local   adoFiles  :  dir "${do}/ado/`subDir'" files "*.ado"				//Get list of adofiles within each sub-directory
+		local   adoFiles  = subinstr(`" `adoFiles' "', `"""' , "" , .)
+		
+		foreach adoFile of local adoFiles {
+			
+			qui	do "${do}/ado/`subDir'/`adoFile'"								//Load each adofile in the list
+		}
+	}
 	
 	* Run do files	
 	if `analysis' {
