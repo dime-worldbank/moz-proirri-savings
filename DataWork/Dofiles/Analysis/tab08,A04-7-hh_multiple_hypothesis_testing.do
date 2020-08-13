@@ -31,6 +31,11 @@
 *									Prepare data 			   		   		   *
 * ---------------------------------------------------------------------------- */
 	
+	* Set Stata version
+	* (Stata version is local so the code would not reproduce correctly
+	*  if we ran this file separately from the master file)
+	version ${stataVersion}
+		
 	* Load data
 	use 	 "${dt_fin}/PROIRRI Financial Literacy - Savings paper data.dta" , clear
 	
@@ -47,10 +52,17 @@
 			local    wyoungVarlist  `wyoungVarlist'  `outcomeVar'
 		}
 	}
-			
+		
 * ---------------------------------------------------------------------------- *
 *							Multiple hypothesis testing		   		   		   *
 * ---------------------------------------------------------------------------- *
+	
+	* Ensure the sort order
+	* (this is essential to be done immediately before the random process,
+	*  regardless of whether we have saved a fixed dataset already,
+	*  as other commands may have unintentionally (and, in some cases, randomly)
+	*  altered the sort order of our data)
+	isid hhid , sort
 	
 	* Estimate regressions controlling the family-wise error rate for multiple hypothesis test
 	* (this adjusts p-values using the free step-down resampling methodology of Westfall and Young)
@@ -61,7 +73,7 @@
 			familyp(treatment)
 			cluster(associd)
 			bootstraps(${repsNum})
-			seed(${seedsNum})
+			seed(926648) //retrieved from random.org on 8/11/2020, 3.37AM EST
 		;
 	#d	cr
 	
@@ -75,6 +87,8 @@
 	mat list pValues
 	
 	* Same procedure with fixed effects
+	isid hhid , sort
+	
 	#d	;
 		wyoung `wyoungVarlist' ,
 		
@@ -83,7 +97,7 @@
 			strata(prov)
 			cluster(associd)
 			bootstraps(${repsNum})
-			seed(${seedsNum})
+			seed(568717) //retrieved from random.org on 8/11/2020, 3.38AM EST
 		;
 	#d	cr
 	
