@@ -1,17 +1,16 @@
 
 /*******************************************************************************
 *																 			   *
-* 				"Transforming Agriculture through Savings:					   *
-*	 			  Experimental Evidence from Mozambique"		   		       *
+* 	  "Private Consultants Promote Agricultural Investments in Mozambique"	   *
 *																			   *
 *							MAIN/PRINCIPAL DO-FILE							   *
 *																 			   *
 ********************************************************************************
 	
-		WRITTEN BY:			Matteo Ruzzante [mruzzante@worldbank.org]
+		WRITTEN BY:			Matteo Ruzzante [matteo.ruzzante@u.northwestern.edu]
 		REVIEWED BY:		Benjamin Daniels	
 		
-		Last update on:		August 2020
+		Last update on:		January 2021
 						
 			PART 0: Settings
 			PART 1:	Folder paths
@@ -38,6 +37,7 @@
 	#d	;
 		
 		local packageList
+						  boottest
 						  dataout
 						  distinct
 						  estout
@@ -86,7 +86,7 @@
 		* Original coder
 		if  c(username) == "ruzza" {
 			
-			global dataFolder "C:/Users/ruzza/Dropbox/PROIRRI Financial Literacy - DIME Analytics Code Review"
+			global dataFolder "C:/Users/ruzza/OneDrive/Desktop/moz-proirri-savings_preRepo/DataSets"
 			global githubRepo "C:/Users/ruzza/OneDrive/Documenti/GitHub/moz-proirri-savings"
 		}
 		
@@ -101,7 +101,7 @@
 	* Subfolders
 	* ----------
 	
-		global dt_fin	   "${dataFolder}"
+		global dt_fin	   "${dataFolder}/Final"
 		
 		global dataWork    "${githubRepo}/DataWork"
 			
@@ -211,7 +211,8 @@
 				
 							el_d_owncattle 		el_d_owntraction 	el_d_owncart 			  
 							el_d_owntractor		el_d_ownplough		el_d_ownmotocult
-							el_d_ownseeder 	  	el_d_owntrailer	  	el_d_ownmotorpump  
+							el_d_ownseeder 	  	el_d_owntrailer	  	el_d_ownmotorpump
+							el_d_ownelecpump
 				
 							${credVars}
 							${inputVars}
@@ -220,7 +221,8 @@
 						
 		global controlVars
 							nbr_members
-							bl_irrigation_ha 	el_headage			el_headeduc
+							bl_irrigation_ha bl_multicultivator
+							el_headage		 el_headeduc
 		;
 		
 	#d	cr
@@ -250,19 +252,15 @@
 		//Table 1 presents the timeline of the project implementation and
 		//was directly typed in LaTeX
 		
-		do "${do_anl}/tab02-sample.do"											//Study sample
+		do "${do_anl}/tab02-baltab.do"											//Balance table
 		
-		do "${do_anl}/tab03-assoc_targetValue.do"								//Impact on target value at the association level (administrative data)
+		do "${do_anl}/tab03-assoc_savingsValue.do"								//Impact on target value at the association level (administrative data)
+				
+		do "${do_anl}/tab04-hh_saving.do"										//Impact on saving decision and value at the household level (box pick-up data)
 		
-		do "${do_anl}/tab04-baltab.do"											//Balance table
+		do "${do_anl}/tab05-assoc_equipment.do"									//Impact on equipment reception and value at the association level (administrative data)
 		
-		do "${do_anl}/tab05-assoc_savingsValue.do"								//Impact on saving value at the association level (administrative data)
-		
-		do "${do_anl}/tab06-hh_saving.do"										//Impact on saving decision and value at the household level (box pick-up data)
-		
-		do "${do_anl}/tab07-assoc_equipment.do"									//Impact on equipment reception and value at the association level (administrative data)
-		
-		do "${do_anl}/tab08,A04-7-hh_multiple_hypothesis_testing.do"			//Impact on outcomes from household survey data,
+		do "${do_anl}/tab06-7,A04-6-hh_multiple_hypothesis_testing.do"			//Impact on outcomes from household survey data,
 																				//such as mechanization use and ownership, credit, input use and costs
 																				//that were not part of our pre-analysis plan for 
 																				//the experiment filed in the AEA RCT Registry
@@ -290,39 +288,29 @@
 		* Supplementary tables
 		* --------------------
 		
-		do "${do_anl}/tabA01-descriptives.do"									//Descriptives and data source for variables used in `analysis'
-		
-		do "${do_anl}/tabA02-descriptives_app.do"								//Descriptives and data source for variables used in `appendix'
+		do "${do_anl}/tabA01-assoc_targetValue.do"								//Impact on saving value at the association level (administrative data)
 
+		do "${do_anl}/tabA02-descriptives.do"									//Descriptives and data source for variables used in `analysis'
+		
 		do "${do_anl}/tabA03-hh_saving_gap.do"									//Impact on saving gap at the household level (box pick-up data)
+				
+		do "${do_anl}/tabA07-hh_saving_pooled.do"								//Impact on saving decision and value at the household level (box pick-up data) -- pooled outcomes
+				
+		do "${do_anl}/tabA08-hh_saving_winsor.do"								//Impact on saving decision and value at the household level (box pick-up data) -- winsorized and trimmed values
 		
-		do "${do_anl}/tabA08-baltab_wealth.do"									//Balance table by wealth
+		do "${do_anl}/tabA09-hh_saving_training.do"								//Impact on saving decision and value at the household level (box pick-up data) -- sample that attended the financial literacy training
 		
-		do "${do_anl}/tabA09-hh_saving_het_wealth_shock.do"						//Saving heterogeneous effect by wealth and shock exposure
+		do "${do_anl}/tabA10-hh_saving_controls.do"								//Impact on savings, controlling for unbalanced covariates
 		
-		do "${do_anl}/tabA10-hh_use_mechanization_het_wealth.do"				//Mechanization heterogeneous effect by wealth
+		do "${do_anl}/tabA11-hh_saving_el.do"									//Impact on saving decision and value at the household level (box pick-up data) -- sample that was interviewed at endline		
 		
-		do "${do_anl}/tabA11-baltab_shock.do"									//Balance table by shock exposure
+		do "${do_anl}/tabA12-hh_saving_boottest.do"								//Impact on Household Savings with Wild Bootstrap Confidence Intervals
 		
-		do "${do_anl}/tabA12-hh_saving_cumul.do"								//Impact on saving decision and value at the household level (box pick-up data) -- cumulative outcomes (summing over quarters)
+		do "${do_anl}/tabA13-hh_followup_visits.do"								//Summary statistics on follow-up visits (household survey data)
 		
-		do "${do_anl}/tabA13-hh_saving_pooled.do"								//Impact on saving decision and value at the household level (box pick-up data) -- pooled outcomes
+	    do "${do_anl}/tabA14-hh_saving_het_penalty.do"							//Heterogeneous effect by penalty outcomes
 		
-		do "${do_anl}/tabA14-hh_saving_ihs.do"									//Impact on saving decision and value at the household level (box pick-up data) -- inverse hyperbolic sine and logarithm transformation
-		
-		do "${do_anl}/tabA15-hh_saving_winsor.do"								//Impact on saving decision and value at the household level (box pick-up data) -- winsorized and trimmed values
-		
-		do "${do_anl}/tabA16-hh_saving_training.do"								//Impact on saving decision and value at the household level (box pick-up data) -- sample that attended the financial literacy training
-		
-		do "${do_anl}/tabA17-hh_saving_controls.do"								//Impact on savings, controlling for unbalanced covariates
-		
-		do "${do_anl}/tabA18-hh_saving_el.do"									//Impact on saving decision and value at the household level (box pick-up data) -- sample that was interviewed at endline		
-		
-		do "${do_anl}/tabA19-hh_followup_visits.do"								//Summary statistics on follow-up visits (household survey data)
-		
-	    do "${do_anl}/tabA20-hh_saving_het_penalty.do"							//Heterogeneous effect by penalty outcomes
-		
-		do "${do_anl}/tabA21-hh_collective_action.do"							//Impact on collective action failure (household survey data)	
+		do "${do_anl}/tabA15-hh_collective_action.do"							//Impact on collective action failure (household survey data)
 	}
 	
 

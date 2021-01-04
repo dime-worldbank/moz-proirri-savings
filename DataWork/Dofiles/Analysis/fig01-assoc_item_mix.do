@@ -1,14 +1,13 @@
 
 /*******************************************************************************
 *																 			   *
-* 				"Transforming Agriculture through Savings:					   *
-*	 			  Experimental Evidence from Mozambique"		   		       *
+* 	  "Private Consultants Promote Agricultural Investments in Mozambique"	   *
 *																			   *
 *						Mix of items applied for							   *
 *																 			   *
 ********************************************************************************
 	
-		WRITTEN BY:  	Matteo Ruzzante [mruzzante@worldbank.org]
+		WRITTEN BY:  	Matteo Ruzzante [matteo.ruzzante@u.northwestern.edu]
 		
 		REQUIRES:   	"${dt_fin}/PROIRRI Financial Literacy - Savings paper data.dta"
 						

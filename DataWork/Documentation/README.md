@@ -1,5 +1,5 @@
 
-# Construction of Variables Used in "Transforming Agriculture through Savings: Experimental Evidence from Mozambique"
+# Construction of Variables Used in "Private Consultants Promote Agricultural Investments in Mozambique"
 
 The lists and tables below describe how the variables used for the data anaysis in the paper were constructed, starting from the data we collected from multiple sources.
 
