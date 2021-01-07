@@ -18,6 +18,8 @@ The main script will take around a full day on a reasonable cluster. Without con
 The individual do-files with their respective inputs and outputs are explained below.
 The do-files employ finalized datasets, which are constructed from various data sources, listed and described below.
 
+Computational reproducibility was verified by [DIME Analytics](https://worldbank.github.io/dimeanalytics/code-review/). Details of the reproducibility checklist can be found [here](https://github.com/dime-worldbank/moz-proirri-savings/tree/master/PROIRRI_Savings_Reproducibility_Checks.pdf).
+
 
 ## Data Description
 The final dataset `PROIRRI Financial Literacy - Savings paper data.dta` contains information on all 42 associations and 3,081 households in the experimental sample.
