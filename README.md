@@ -5,9 +5,9 @@
 	<img src="https://github.com/dime-worldbank/moz-proirri-savings/raw/master/img/i2i.png?raw=true")
 </p>
 
-# Replication Package for "Private Consultants Promote Agricultural Investments in Mozambique"
+# Replication Package for "Do Private Consultants Promote Savings and Investments in Rural Mozambique?"
 
-This repository contains the codes that replicate the figures and tables presented in the paper "Private Consultants Promote Agricultural Investments in Mozambique" (2021) by Paul Christian, Steven Glover, Florence Kondylis, Valerie Mueller, Matteo Ruzzante and Astrid Zwager.
+This repository contains the codes that replicate the figures and tables presented in the paper "Do Private Consultants Promote Savings and Investments in Rural Mozambique?" (2021) by Paul Christian, Steven Glover, Florence Kondylis, Valerie Mueller, Matteo Ruzzante and Astrid Zwager.
 
 ## Read First
 The whole analysis in the paper can be rerun by using the script `MAIN_proirri.do`, which is in the [Dofiles](https://github.com/dime-worldbank/moz-proirri-savings/tree/master/DataWork/Dofiles) subfolder. It is only necessary to add your computer's username and path to the cloned replication folder(s) in line 97-100 of such do-file in *PART 1*.
