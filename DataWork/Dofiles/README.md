@@ -1,5 +1,5 @@
 
-# Dofiles' Inputs and Outputs in "Private Consultants Promote Agricultural Investments in Mozambique"
+# Dofiles' Inputs and Outputs in "Do Private Consultants Promote Savings and Investments in Rural Mozambique?"
 
 ## Figures
 - `fig01-assoc_item_mix.do` uses project administrative data at the association level &#8594; plots Figure 1.

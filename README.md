@@ -45,7 +45,9 @@ All tables and figures were included &ndash; without further editing &ndash; in 
 
 You can find a more detailed description of each do-file's inputs and outputs [here](https://github.com/dime-worldbank/moz-proirri-savings/tree/master/DataWork/Dofiles).
 
------------------------------------------------------------------------------------------------------
-
 ## Contact
 If you have any comment, suggestion or request for clarifications, you can contact Matteo Ruzzante at <a href="mailto:matteo.ruzzante@u.northwestern.edu">matteo.ruzzante@u.northwestern.edu</a> or directly open an issue or pull request in this GitHub repository.</p>
+
+&nbsp;
+
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
