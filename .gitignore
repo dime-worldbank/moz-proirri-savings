@@ -85,6 +85,7 @@ Cleaning*
 !/**/Output/**/*.svg
 !/**/Output/**/*.png
 
+!/**/Documentation/**/*.xlsx
 
 !/**/*.pdf
 

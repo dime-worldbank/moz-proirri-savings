@@ -35,6 +35,9 @@ Namely, we apply the following pattern to inform variable naming:
 
 You can find a more detailed description of all the variables employed in the data analysis, especially with regard to variables constructed using survey data, [here](https://github.com/dime-worldbank/moz-proirri-savings/tree/master/DataWork/Documentation).
 
+The survey instrument is also available in Portuguese [here](https://github.com/dime-worldbank/moz-proirri-savings/tree/master/DataWork/Documentation/QRE_HH_Endline_PT.xlsx) and the related CTO form [here](https://github.com/dime-worldbank/moz-proirri-savings/tree/master/DataWork/Documentation/CTO_HH_Endline.xlsx).
+
+
 
 ##  Code Process
 The name of the do-files, which are run by the principal script `MAIN_proirri.do`, corresponds to the `.tex` or `.png` file to be created in the output folder, with the exception of `tab06-7,A04-6-hh_multiple_hypothesis_testing.do`.
