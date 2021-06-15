@@ -12,8 +12,8 @@
 		
 		REQUIRES:   	"${dt_fin}/PROIRRI Financial Literacy - Savings paper data.dta"
 						
-		CREATES:	   	Table 3: Impact on Total Scheme Savings
-						"${out_tab}/tab03-assoc_savingsValue.tex"
+		CREATES:	   	Table 5: Impact on Total Scheme Savings
+						"${out_tab}/tab05-assoc_savingsValue.tex"
 												
 * ---------------------------------------------------------------------------- */
 	
@@ -70,12 +70,12 @@
 	
 	* Clean up table
 	filefilter  "${out_tab}/todelete.tex"  				    ///
-				"${out_tab}/tab03-assoc_savingsValue.tex" , ///
+				"${out_tab}/tab05-assoc_savingsValue.tex" , ///
 				from("[1em]") to("") replace	
 	erase 		"${out_tab}/todelete.tex" 	
 	
 	* Add link to the file ([filefilter] does not provide it automatically)
-	di as text `"Open final file in LaTeX here: {browse "${out_tab}/tab03-assoc_savingsValue.tex":${out_tab}/tab03-assoc_savingsValue.tex}"'
+	di as text `"Open final file in LaTeX here: {browse "${out_tab}/tab05-assoc_savingsValue.tex":${out_tab}/tab05-assoc_savingsValue.tex}"'
 
 
 ******************************** End of do-file ********************************

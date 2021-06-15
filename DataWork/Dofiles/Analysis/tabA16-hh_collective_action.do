@@ -1,7 +1,8 @@
 
 /*******************************************************************************
 *																 			   *
-* 	  "Private Consultants Promote Agricultural Investments in Mozambique"	   *
+* 	  				"Do Private Consultants Promote Savings					   *
+*					 and Investments in Rural Mozambique?"	  				   *
 *																			   *
 *						Collective action failure 							   *
 *																 			   *
@@ -11,8 +12,8 @@
 		
 		REQUIRES:   	"${dt_fin}/PROIRRI Financial Literacy - Savings paper data.dta"
 						
-		CREATES:	   	Table A15: Impact on Collective Action Failure Outcomes
-						"${out_tab}/tabA15-hh_collective_action.tex"
+		CREATES:	   	Table A16: Impact on Collective Action Failure Outcomes
+						"${out_tab}/tabA16-hh_collective_action.tex"
 														
 * ---------------------------------------------------------------------------- */
 
@@ -73,12 +74,12 @@
 	
 	* Clean up table
 	filefilter  "${out_tab}/todelete.tex"  					   ///
-				"${out_tab}/tabA15-hh_collective_action.tex" , ///
+				"${out_tab}/tabA16-hh_collective_action.tex" , ///
 				from("[1em]") to("") replace
 	erase		"${out_tab}/todelete.tex"
 	
 	* Add link to the file ([filefilter] does not provide it automatically)
-	di as text `"Open final file in LaTeX here: {browse "${out_tab}/tabA15-hh_collective_action.tex":${out_tab}/tabA15-hh_collective_action.tex}"'
+	di as text `"Open final file in LaTeX here: {browse "${out_tab}/tabA16-hh_collective_action.tex":${out_tab}/tabA16-hh_collective_action.tex}"'
 
 	
 ******************************** End of do-file ********************************	

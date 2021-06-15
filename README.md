@@ -20,6 +20,7 @@ The do-files employ finalized datasets, which are constructed from various data 
 
 Computational reproducibility was verified by [DIME Analytics](https://worldbank.github.io/dimeanalytics/code-review/). Details of the reproducibility checklist can be found [here](https://github.com/dime-worldbank/moz-proirri-savings/tree/master/PROIRRI_Savings_Reproducibility_Checks.pdf).
 
+&nbsp;
 
 ## Data Description
 The final dataset `PROIRRI Financial Literacy - Savings paper data.dta` contains information on all 42 associations and 3,081 households in the experimental sample.
@@ -40,8 +41,8 @@ The survey instrument is also available in Portuguese [here](https://github.com/
 
 
 ##  Code Process
-The name of the do-files, which are run by the principal script `MAIN_proirri.do`, corresponds to the `.tex` or `.png` file to be created in the output folder, with the exception of `tab06-7,A04-6-hh_multiple_hypothesis_testing.do`.
-The latter do-file estimates the program impact on secondary outcomes from household survey data, such as mechanization use and ownership, credit, input use and other costs. These variables were not part of our pre-analysis plan for the experiment filed in the [AEA RCT Registry](https://www.socialscienceregistry.org/trials/937) as "Group Interventions for Agricultural Transformation in Mozambique" (RCT ID: AEARCTR-0000937), and therefore we adjust the p-values for family-wise error rate using the free step-down procedure by Westfall and Young (1993).
+The name of the do-files, which are run by the principal script `MAIN_proirri.do`, corresponds to the `.tex` or `.png` file to be created in the output folder, with the exception of `tab03-4,A04-6-hh_multiple_hypothesis_testing.do` and `tabA11-12-hh_multiple_hypothesis_testing_controls.do`.
+The latter do-files estimate the program impact on secondary outcomes from household survey data, such as mechanization use and ownership, credit, input use and other costs. These variables were not part of our pre-analysis plan for the experiment filed in the [AEA RCT Registry](https://www.socialscienceregistry.org/trials/937) as "Group Interventions for Agricultural Transformation in Mozambique" (RCT ID: AEARCTR-0000937), and therefore we adjust the p-values for family-wise error rate using the free step-down procedure by Westfall and Young (1993).
 
 All do-files use the final dataset, `PROIRRI Financial Literacy - Savings paper data.dta`.
 All tables and figures were included &ndash; without further editing &ndash; in the TeX document containing the current version of the paper.

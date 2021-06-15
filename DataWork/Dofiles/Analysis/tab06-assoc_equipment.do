@@ -1,7 +1,8 @@
 
 /*******************************************************************************
 *																 			   *
-* 	  "Private Consultants Promote Agricultural Investments in Mozambique"	   *
+* 	  				"Do Private Consultants Promote Savings					   *
+*					 and Investments in Rural Mozambique?"	  				   *
 *																			   *
 *				Impact on scheme equipment (success and value)				   *
 *																 			   *
@@ -11,8 +12,8 @@
 		
 		REQUIRES:   	"${dt_fin}/PROIRRI Financial Literacy - Savings paper data.dta"
 						
-		CREATES:	   	Table 5: Impact on Equipment
-						"${out_tab}/tab05-assoc_equipment.tex"
+		CREATES:	   	Table 6: Impact on Equipment
+						"${out_tab}/tab06-assoc_equipment.tex"
 														
 * ---------------------------------------------------------------------------- */
 	
@@ -164,12 +165,12 @@
 	
 	* Clean up table
 	filefilter  "${out_tab}/todelete.tex" 			     ///
-				"${out_tab}/tab05-assoc_equipment.tex" , ///
+				"${out_tab}/tab06-assoc_equipment.tex" , ///
 				from("[1em]") to("") replace	
 	erase 		"${out_tab}/todelete.tex" 	
 	
 	* Add link to the file (filefilter does not provide it automatically)
-	di as text `"Open final file in LaTeX here: {browse "${out_tab}/tab05-assoc_equipment.tex":${out_tab}/tab05-assoc_equipment.tex}"'
+	di as text `"Open final file in LaTeX here: {browse "${out_tab}/tab06-assoc_equipment.tex":${out_tab}/tab06-assoc_equipment.tex}"'
 	
 
 ******************************** End of do-file ********************************
