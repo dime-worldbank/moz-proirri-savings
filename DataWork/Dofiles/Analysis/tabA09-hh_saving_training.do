@@ -1,7 +1,8 @@
 
 /*******************************************************************************
 *																 			   *
-* 	  "Private Consultants Promote Agricultural Investments in Mozambique"	   *
+* 	  				"Do Private Consultants Promote Savings					   *
+*					 and Investments in Rural Mozambique?"	  				   *
 *																			   *
 *					Impact on household savings (trained)					   *
 *																 			   *

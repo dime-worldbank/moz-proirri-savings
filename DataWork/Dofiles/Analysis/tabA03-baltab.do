@@ -1,7 +1,8 @@
 
 /*******************************************************************************
 *																 			   *
-* 	  "Private Consultants Promote Agricultural Investments in Mozambique"	   *
+* 	  				"Do Private Consultants Promote Savings					   *
+*					 and Investments in Rural Mozambique?"	  				   *
 *																			   *
 *							Balance checks									   *
 *																 			   *
@@ -11,8 +12,8 @@
 		
 		REQUIRES:   	"${dt_fin}/PROIRRI Financial Literacy - Savings paper data.dta"
 						
-		CREATES:	   	Table 2: Balance Table
-						"${out_tab}/tab02-baltab.tex"
+		CREATES:	   	Table A3: Balance Table
+						"${out_tab}/tabA03-baltab.tex"
 													
 * ---------------------------------------------------------------------------- *
 *						Estimate and store statistics		   		   		   *
@@ -308,7 +309,7 @@
 	}
 	
 	* Make final table
-	file  open finalFile using "${out_tab}/tab02-baltab.tex"	///
+	file  open finalFile using "${out_tab}/tabA03-baltab.tex"	///
 		, text write replace
 		
 	#d	;
@@ -334,7 +335,7 @@
 	file close finalFile
 
 	* Add link to the file ([filefilter] does not provide it automatically)
-	di as text `"Open final file in LaTeX here: {browse "${out_tab}/tab02-baltab.tex":${out_tab}/tab02-baltab.tex}"'
+	di as text `"Open final file in LaTeX here: {browse "${out_tab}/tabA03-baltab.tex":${out_tab}/tabA03-baltab.tex}"'
 
 	
 ***************************** End of do-file ***********************************

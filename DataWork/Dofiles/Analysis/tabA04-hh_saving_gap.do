@@ -1,7 +1,8 @@
 
 /*******************************************************************************
 *																 			   *
-* 	  "Private Consultants Promote Agricultural Investments in Mozambique"	   *
+* 	  				"Do Private Consultants Promote Savings					   *
+*					 and Investments in Rural Mozambique?"	  				   *
 *																			   *
 *						Impact on final saving gap							   *
 *																 			   *
@@ -11,8 +12,8 @@
 		
 		REQUIRES:   	"${dt_fin}/PROIRRI Financial Literacy - Savings paper data.dta"
 		
-		CREATES:	   	Table A3: Impact on Saving Gap
-						"${out_tab}/tabA03-hh_saving_gap.tex"
+		CREATES:	   	Table A4: Impact on Saving Gap
+						"${out_tab}/tabA04-hh_saving_gap.tex"
 												
 * ---------------------------------------------------------------------------- */
 	
@@ -71,7 +72,7 @@
 	erase 		"${out_tab}/todelete.tex" 	
 	
 	* Add link to the file (filefilter does not provide it automatically)
-	di as text `"Open final file in LaTeX here: {browse "${out_tab}/tabA03-hh_saving_gap.tex":${out_tab}/tabA03-hh_saving_gap.tex}"'
+	di as text `"Open final file in LaTeX here: {browse "${out_tab}/tabA04-hh_saving_gap.tex":${out_tab}/tabA04-hh_saving_gap.tex}"'
 
 	
 ******************************** End of do-file ********************************

@@ -1,7 +1,8 @@
 
 /*******************************************************************************
 *																 			   *
-* 	  "Private Consultants Promote Agricultural Investments in Mozambique"	   *
+* 	  				"Do Private Consultants Promote Savings					   *
+*					 and Investments in Rural Mozambique?"	  				   *
 *																			   *
 *						Mix of items applied for							   *
 *																 			   *
@@ -11,8 +12,8 @@
 		
 		REQUIRES:   	"${dt_fin}/PROIRRI Financial Literacy - Savings paper data.dta"
 						
-		CREATES:	   	Figure 1: Applications to Matching Grants: Mix of Items
-						"${out_fig}/fig01-assoc_item_mix.png"
+		CREATES:	   	Figure A2: Applications to Matching Grants: Mix of Items
+						"${out_fig}/figA02-assoc_item_mix.png"
 												
 * ---------------------------------------------------------------------------- */
 
@@ -83,7 +84,7 @@
 	#d	cr
 	
 	* Export figure in .PNG format
-	gr export "${out_fig}/fig01-assoc_item_mix.png", width(5000) replace
+	gr export "${out_fig}/figA02-assoc_item_mix.png", width(5000) replace
 
 
 ***************************** End of do-file ***********************************

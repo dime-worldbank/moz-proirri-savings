@@ -1,7 +1,8 @@
 
 /*******************************************************************************
 *																 			   *
-* 	  "Private Consultants Promote Agricultural Investments in Mozambique"	   *
+* 	  				"Do Private Consultants Promote Savings					   *
+*					 and Investments in Rural Mozambique?"	  				   *
 *																			   *
 *					Wild bootstrap confidence intervals						   *
 *																 			   *
@@ -11,8 +12,8 @@
 		
 		REQUIRES:   	"${dt_fin}/PROIRRI Financial Literacy - Savings paper data.dta" , clear
 						
-		CREATES:	   	Table A12: Impact on Household Savings with Wild Bootstrap Confidence Intervals
-						"${out_tab}/tabA12-hh_saving_boottest.tex"
+		CREATES:	   	Table A13: Impact on Household Savings with Wild Bootstrap Confidence Intervals
+						"${out_tab}/tabA13-hh_saving_boottest.tex"
 												
 * ---------------------------------------------------------------------------- */
 	
@@ -31,7 +32,9 @@
 		estadd scalar control_sd   		= r(sd)
 		estadd local 		  provFE 	  ""
 		
-		boottest   													 treatment, rep(`=${repsNum}-1') level(90) nograph
+		boottest   													 treatment, ///
+			boottype(wild) seed(${wildSeedsNum}) rep(`=${repsNum}-1') 			///
+			level(90) nograph
 		estadd scalar boot_p            = r(p)
 		
 		matrix CI_temp = r(CI)
@@ -45,7 +48,9 @@
 		eststo	   v`quarter'_prov   : reghdfe bp_v`quarter'_d_saved_cumul treatment, cl(associd) abs(prov)
 		estadd     local 	  provFE "\checkmark"
 		
-		boottest   													 treatment, rep(`=${repsNum}-1') level(90) nograph
+		boottest   													 treatment, ///
+			boottype(wild) seed(${wildSeedsNum}) rep(`=${repsNum}-1') 			///
+			level(90) nograph
 		estadd scalar boot_p            = r(p)
 		
 		matrix CI_temp = r(CI)
@@ -94,7 +99,9 @@
 		estadd scalar control_sd   		= r(sd)
 		estadd local 		   provFE 	  ""
 		
-		boottest   													 treatment, rep(`=${repsNum}-1') level(90) nograph
+		boottest   													 treatment, ///
+			boottype(wild) seed(${wildSeedsNum}) rep(`=${repsNum}-1') 			///
+			level(90) nograph
 		estadd scalar boot_p            = r(p)
 		
 		matrix CI_temp = r(CI)
@@ -107,7 +114,9 @@
 		eststo	    v`quarter'_prov     : reghdfe bp_v`quarter'_boxvalue_cumul treatment, cl(associd) abs(prov)
 		estadd      local 	   provFE 	  "\checkmark"
 		
-		boottest   													 treatment, rep(`=${repsNum}-1') level(90) nograph
+		boottest   													 treatment, ///
+			boottype(wild) seed(${wildSeedsNum}) rep(`=${repsNum}-1') 			///
+			level(90) nograph
 		estadd scalar boot_p            = r(p)
 		
 		matrix CI_temp = r(CI)
@@ -185,12 +194,12 @@
 	
 	* Clean up table
 	filefilter  "${out_tab}/todelete.tex" 		   			 ///
-				"${out_tab}/tabA12-hh_saving_boottest.tex" , ///
+				"${out_tab}/tabA13-hh_saving_boottest.tex" , ///
 				from("[1em]") to("") replace	
 	erase 		"${out_tab}/todelete.tex" 	
 	
 	* Add link to the file ([filefilter] does not provide it automatically)
-	di as text `"Open final file in LaTeX here: {browse "${out_tab}/tabA12-hh_saving_boottest.tex":${out_tab}/tabA12-hh_saving_boottest.tex}"'
+	di as text `"Open final file in LaTeX here: {browse "${out_tab}/tabA13-hh_saving_boottest.tex":${out_tab}/tabA13-hh_saving_boottest.tex}"'
 		
 
 ******************************** End of do-file ********************************

@@ -1,16 +1,16 @@
 
 /*******************************************************************************
 *																 			   *
-* 	  "Private Consultants Promote Agricultural Investments in Mozambique"	   *
+*					"Do Private Consultants Promote Savings					   *
+*					 and Investments in Rural Mozambique?"	  				   *
 *																			   *
 *							MAIN/PRINCIPAL DO-FILE							   *
 *																 			   *
 ********************************************************************************
 	
 		WRITTEN BY:			Matteo Ruzzante [matteo.ruzzante@u.northwestern.edu]
-		REVIEWED BY:		Benjamin Daniels	
 		
-		Last update on:		January 2021
+		Last update on:		June 2021
 						
 			PART 0: Settings
 			PART 1:	Folder paths
@@ -61,6 +61,7 @@
 	* Set key globals for computation
 	global repsNum   	10000		//number of replications for randomization inference estimations
 	global seedsNum		868379		//retrieved from random.org on 5/13/2019, 3.10PM EST
+	global wildSeedsNum 780996		//retrieved from random.org on 5/27/2021, 2.40PM CST
   	global sleepTime	1000		//delay code for running so it doesn't crash
 	global stataVersion 15.0		//Stata version: change to older version if you don't have the one specified
 									//however, beware that this may cause some packages to not work properly
@@ -86,14 +87,12 @@
 		* Original coder
 		if  c(username) == "ruzza" {
 			
-			global dataFolder "C:/Users/ruzza/OneDrive/Desktop/moz-proirri-savings_preRepo/DataSets"
 			global githubRepo "C:/Users/ruzza/OneDrive/Documenti/GitHub/moz-proirri-savings"
 		}
 		
 		* Reviewer or other user
 		if 	c(username) ==    "" { //you can find your username by running "di c(username)" in the command window, and then subsitute it here
 			
-			global dataFolder ""   //add the path where you saved the datasets here
 			global githubRepo ""   //add the path where you cloned the GitHub repository here
 								   //(see examples above)
 		}
@@ -101,21 +100,20 @@
 	* Subfolders
 	* ----------
 	
-		global dt_fin	   "${dataFolder}/Final"
-		
 		global dataWork    "${githubRepo}/DataWork"
-			
-		global out		   "${dataWork}/Output"
-		global out_tab	   "${out}/Tables"
-		global out_fig	   "${out}/Figures"
 		
 		global do		   "${dataWork}/Dofiles"
 		global do_anl	   "${do}/Analysis"
+		
+		global dt_fin	   "${dataWork}/Data"
+		
+		global out		   "${dataWork}/Output"
+		global out_tab	   "${out}/Tables"
+		global out_fig	   "${out}/Figures"
 				
 		macro  list
 		
 		* Create folders if missing
-		cap mkdir		   "${dt_int}"
 		cap mkdir		   "${dt_fin}"
 		
 		cap mkdir		   "${out}"
@@ -222,7 +220,13 @@
 		global controlVars
 							nbr_members
 							bl_irrigation_ha bl_multicultivator
-							el_headage		 el_headeduc
+							el_headage		 el_headeduc		el_durroof
+		;
+		
+		global assoc_controlVars
+							nbr_members
+							bl_irrigation_ha bl_multicultivator
+							el_headage
 		;
 		
 	#d	cr
@@ -252,25 +256,19 @@
 		//Table 1 presents the timeline of the project implementation and
 		//was directly typed in LaTeX
 		
-		do "${do_anl}/tab02-baltab.do"											//Balance table
+		do "${do_anl}/tab02-hh_saving.do"										//Impact on saving decision and value at the household level (box pick-up data)
 		
-		do "${do_anl}/tab03-assoc_savingsValue.do"								//Impact on target value at the association level (administrative data)
-				
-		do "${do_anl}/tab04-hh_saving.do"										//Impact on saving decision and value at the household level (box pick-up data)
-		
-		do "${do_anl}/tab05-assoc_equipment.do"									//Impact on equipment reception and value at the association level (administrative data)
-		
-		do "${do_anl}/tab06-7,A04-6-hh_multiple_hypothesis_testing.do"			//Impact on outcomes from household survey data,
+		do "${do_anl}/tab03-4,A04-6-hh_multiple_hypothesis_testing.do"			//Impact on outcomes from household survey data,
 																				//such as mechanization use and ownership, credit, input use and costs
 																				//that were not part of our pre-analysis plan for 
 																				//the experiment filed in the AEA RCT Registry
 																				//under "Group Interventions for Agricultural Transformation in Mozambique"
 																				//(RCT ID: AEARCTR-0000937)
 																				
-		* Main figures
-		* ------------
 		
-		do "${do_anl}/fig01-assoc_item_mix.do"									//Mix of items in the grant application (administrative data)
+		do "${do_anl}/tab05-assoc_savingsValue.do"								//Impact on saving value at the association level (box-pick up data)
+				
+		do "${do_anl}/tab06-assoc_equipment.do"									//Impact on equipment reception and value at the association level (administrative data)
 	}
 	
 	if `appendix' {
@@ -282,18 +280,22 @@
 		// using PII community-level data, i.e., GPS coordinates, 
 		// that we are not making publicly available for privacy concerns
 		
-		do "${do_anl}/figA02-hh_penalty_outcomes.do"							//Percentage of households reporting penalty outcomes (household survey data)
+		do "${do_anl}/figA02-assoc_item_mix.do"									//Mix of items in the grant application (administrative data)
+		
+		do "${do_anl}/figA03-assoc_savingsValue_kdensity.do"					//Kernel densities of aggregate saving value at the association level (box pick-up data)
+		
+		do "${do_anl}/figA04-hh_penalty_outcomes.do"							//Percentage of households reporting penalty outcomes (household survey data)
 		
 		
 		* Supplementary tables
 		* --------------------
 		
-		do "${do_anl}/tabA01-assoc_targetValue.do"								//Impact on saving value at the association level (administrative data)
+		do "${do_anl}/tabA01-assoc_targetValue.do"								//Impact on target value at the association level (administrative data)
 
 		do "${do_anl}/tabA02-descriptives.do"									//Descriptives and data source for variables used in `analysis'
 		
-		do "${do_anl}/tabA03-hh_saving_gap.do"									//Impact on saving gap at the household level (box pick-up data)
-				
+		do "${do_anl}/tabA03-baltab.do"											//Balance table
+						
 		do "${do_anl}/tabA07-hh_saving_pooled.do"								//Impact on saving decision and value at the household level (box pick-up data) -- pooled outcomes
 				
 		do "${do_anl}/tabA08-hh_saving_winsor.do"								//Impact on saving decision and value at the household level (box pick-up data) -- winsorized and trimmed values
@@ -302,15 +304,17 @@
 		
 		do "${do_anl}/tabA10-hh_saving_controls.do"								//Impact on savings, controlling for unbalanced covariates
 		
-		do "${do_anl}/tabA11-hh_saving_el.do"									//Impact on saving decision and value at the household level (box pick-up data) -- sample that was interviewed at endline		
+		do "${do_anl}/tabA11-12-hh_multiple_hypothesis_testing_controls.do"		//Impact mechanization use and costs, controlling for unbalanced covariates
 		
-		do "${do_anl}/tabA12-hh_saving_boottest.do"								//Impact on Household Savings with Wild Bootstrap Confidence Intervals
+		do "${do_anl}/tabA13-hh_saving_boottest.do"								//Impact on Household Savings with Wild Bootstrap Confidence Intervals
 		
-		do "${do_anl}/tabA13-hh_followup_visits.do"								//Summary statistics on follow-up visits (household survey data)
+		do "${do_anl}/tabA14-hh_followup_visits.do"								//Summary statistics on follow-up visits (household survey data)
 		
-	    do "${do_anl}/tabA14-hh_saving_het_penalty.do"							//Heterogeneous effect by penalty outcomes
+		do "${do_anl}/tabA15-hh_saving_het_plan_update.do"						//Heterogeneous effects by update in the saving plan
 		
-		do "${do_anl}/tabA15-hh_collective_action.do"							//Impact on collective action failure (household survey data)
+		do "${do_anl}/tabA16-hh_collective_action.do"							//Impact on collective action failure (household survey data)
+		
+	    do "${do_anl}/tabA17-hh_saving_het_penalty.do"							//Heterogeneous effects by penalty outcomes
 	}
 	
 

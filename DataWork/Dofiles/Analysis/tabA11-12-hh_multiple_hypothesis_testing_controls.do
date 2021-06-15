@@ -1,9 +1,10 @@
 
 /*******************************************************************************
 *																 			   *
-* 	  "Private Consultants Promote Agricultural Investments in Mozambique"	   *
+* 	  				"Do Private Consultants Promote Savings					   *
+*					 and Investments in Rural Mozambique?"	  				   *
 *																			   *
-*					Multiple hypothesis testing								   *
+*					Multiple hypothesis testing with controls				   *
 *																 			   *
 ********************************************************************************
 	
@@ -11,25 +12,16 @@
 		
 		REQUIRES:   	"${dt_fin}/PROIRRI Financial Literacy - Savings paper data.dta"
 						
-		CREATES:	   	Table 6: Impact on Mechanization Use
-						"${out_tab}/tab06-hh_use_mechanization.tex"
+		CREATES:	   	Table A11: Impact on Costs, Including Covariate Imbalances
+						"${out_tab}/tabA11-hh_costs_controls.tex"
 						
-						Table A4: Impact on Mechanization Ownership
-						"${out_tab}/tabA04-hh_own_mechanization.tex"
-						
-						Table A5: Impact on Credit
-						"${out_tab}/tabA05-hh_credit.tex"
-						
-						Table A6: Impact on Agricultural Inputs
-						"${out_tab}/tabA06-hh_agri_inputs.tex"
-						
-						Table 7: Impact on Costs
-						"${out_tab}/tab07-hh_costs.tex"
+						Table A12: Impact on Mechanization Use, Including Covariate Imbalances
+						"${out_tab}/tabA12-hh_use_mechanization_controls.tex"
 						
 * ---------------------------------------------------------------------------- *
 *									Prepare data 			   		   		   *
 * ---------------------------------------------------------------------------- */
-	
+		
 	* Set Stata version
 	* (Stata version is local so the code would not reproduce correctly
 	*  if we ran this file separately from the master file)
@@ -68,7 +60,7 @@
 	#d	;
 		wyoung `wyoungVarlist' ,
 		
-			cmd(reg OUTCOMEVAR treatment [pw=pweight], cl(associd) )
+			cmd(reg OUTCOMEVAR treatment ${controlVars} [pw=pweight], cl(associd) )
 			familyp(treatment)
 			cluster(associd)
 			bootstraps(${repsNum})
@@ -91,7 +83,7 @@
 	#d	;
 		wyoung `wyoungVarlist' ,
 		
-			cmd(reghdfe OUTCOMEVAR treatment [pw=pweight], abs(prov) cl(associd) )
+			cmd(reghdfe OUTCOMEVAR treatment ${controlVars} [pw=pweight], abs(prov) cl(associd) )
 			familyp(treatment)
 			strata(prov)
 			cluster(associd)
@@ -121,7 +113,7 @@
 	
 		foreach  var of global machineryItems {
 						
-			eststo	   `state'`var' 	 : reg	   el_d_`state'`var' treatment [pw=pweight], cl(associd)
+			eststo	   `state'`var' 	 : reg	   el_d_`state'`var' treatment ${controlVars} [pw=pweight], cl(associd)
 			
 			sum    						  		   el_d_`state'`var' if e(sample) == 1 & treatment == 0
 			estadd scalar control_mean  		 = r(mean)
@@ -137,7 +129,7 @@
 				local matrixColCount 	= `matrixColCount'    + 1
 			}
 			
-			eststo	   `state'`var'_prov : reghdfe el_d_`state'`var' treatment [pw=pweight], cl(associd) abs(prov)
+			eststo	   `state'`var'_prov : reghdfe el_d_`state'`var' treatment ${controlVars} [pw=pweight], cl(associd) abs(prov)
 			
 			if 		  "`state'`var'" != "ownelecpump" { //removing this variable from the p-value as it could not be computed in absence of variation across treatment arm
 			
@@ -156,6 +148,7 @@
 					
 					${esttabOptions}
 					
+					keep(	  treatment)
 					coeflabel(treatment "\addlinespace[0.75em] Treatment")
 					stats(	  wyoung_pValue_brackets N r2_a control_mean control_sd provFE,
 					  lab(	  " " //blank space
@@ -178,8 +171,8 @@
 
 	foreach outcomeVar in $credVars $inputVars $costVars {
 		
-		eststo  `outcomeVar' 	      		 : reg     `outcomeVar' treatment 	///
-											  [pw=pweight]						///
+		eststo  `outcomeVar' 	      		 : reg     `outcomeVar' treatment ${controlVars}	///
+											  [pw=pweight]										///
 											 , cl(associd)
 		scalar 		  wyoung_pValue 	     = pValues[1,`matrixColCount']
 		local  		  wyoung_pValue_str      = string(wyoung_pValue, "%9.3f")
@@ -192,9 +185,9 @@
 		
 		local matrixColCount = `matrixColCount' + 1
 		
-		eststo  `outcomeVar'_prov   : reghdfe `outcomeVar' treatment 			///
-								   [pw=pweight]									///
-							       , cl(associd) abs(prov)
+		eststo  `outcomeVar'_prov   : reghdfe `outcomeVar' treatment ${controlVars}				///
+								     [pw=pweight]												///
+							        , cl(associd) abs(prov)
 		scalar 		  wyoung_pValue 	     = pValues_FE[1,`matrixColCount_FE']
 		local  		  wyoung_pValue_str      = string(wyoung_pValue, "%9.3f")
 		estadd local  wyoung_pValue_brackets = "[`wyoung_pValue_str']"
@@ -209,7 +202,7 @@
 *							Export formatted tables			  				   *
 * ---------------------------------------------------------------------------- *
 	
-	foreach  state in use own  {
+	foreach  state in use /*own*/ {
 	
 		#d	;
 			esttab 	`state'cattle 		`state'cattle_prov 		
@@ -227,6 +220,7 @@
 					
 					${esttabOptions}
 					
+					keep(	  treatment)
 					coeflabel(treatment "\addlinespace[0.75em] Treatment")
 					stats(	  wyoung_pValue_brackets N r2_a control_mean control_sd provFE,
 					  lab(	  " " //blank space
@@ -247,99 +241,13 @@
 			;
 		#d	cr
 		
-		if "`state'" == "use" local tabNumber "06"
-		if "`state'" == "own" local tabNumber "A04"
+		if "`state'" == "use" local tabNumber "A12"
 		
-		filefilter  "${out_tab}/todelete.tex" 							   	   ///
-					"${out_tab}/tab`tabNumber'-hh_`state'_mechanization.tex" , ///
+		filefilter  "${out_tab}/todelete.tex" 							   	   			///
+					"${out_tab}/tab`tabNumber'-hh_`state'_mechanization_controls.tex" , ///
 					from("[1em]") to("") replace	
 		erase 		"${out_tab}/todelete.tex"
 	}
-	
-	#d	;
-		esttab 	el_credyn      	  	 el_credyn_prov  		 		
-				el_credobj_inputs 	 el_credobj_inputs_prov
-				el_credobj_goods 	 el_credobj_goods_prov
-				el_credobj_equipment el_credobj_equipment_prov
-				
-				using "${out_tab}/todelete.tex",
-				
-				${esttabOptions}
-				
-				coeflabel(treatment "\addlinespace[0.75em] Treatment")
-				stats(	  wyoung_pValue_brackets N r2_a control_mean control_sd provFE,
-				  lab(	  " " //blank space
-						  "\addlinespace[0.75em] Number of observations"
-						  "Adjusted R-squared"
-						  "\addlinespace[0.75em] Mean dep.\ var.\ control group"
-						  "SD dep.\ var.\ control group"
-						  "\addlinespace[0.75em] Province fixed effects")
-				  fmt(0 0 %9.3f %9.3f %9.3f)
-					 )
-				
-				b(%9.3f) se(%9.3f)
-				
-				 prehead("&\multicolumn{2}{c}{Received} &\multicolumn{2}{c}{For agricultural} &\multicolumn{2}{c}{For other} 		&\multicolumn{2}{c}{For agricultural} \\       "
-						 "&\multicolumn{2}{c}{credit}   &\multicolumn{2}{c}{inputs} 		  &\multicolumn{2}{c}{commercial goods} &\multicolumn{2}{c}{machinery} 	      \\       "
-						 " \cmidrule(lr){2-3}		     \cmidrule(lr){4-5}					   \cmidrule(lr){6-7}					 \cmidrule(lr){8-9} 				           "
-						 "&(1) 	 	   &(2) 	   	    &(3)  		 &(4)				      &(5)   	   &(6)           		    &(7)         &(8)  					  \\ \hline"
-						 )
-				postfoot("[0.25em] \hline \hline \\ [-1.8ex]")
-		;
-	#d	cr
-	
-	* Clean up table
-	filefilter  "${out_tab}/todelete.tex" 	   		///
-				"${out_tab}/tabA05-hh_credit.tex" , ///
-				from("[1em]") to("") replace	
-	erase 		"${out_tab}/todelete.tex" 	
-	
-	* Add link to the file (filefilter does not provide it automatically)
-	di as text `"Open final file in LaTeX here: {browse "${out_tab}/tabA05-hh_credit.tex":${out_tab}/tabA05-hh_credit.tex}"'
-	
-	#d	;
-		esttab 	 el_fertorguse     el_fertorguse_prov
-				el_fertchemuse    el_fertchemuse_prov
-				    el_pestuse        el_pestuse_prov
-			  el_fertorg_costs  el_fertorg_costs_prov
-			  el_chemorg_costs  el_chemorg_costs_prov
-			     el_pest_costs     el_pest_costs_prov
-			  
-				using "${out_tab}/todelete.tex",
-				
-				${esttabOptions}
-				
-				coeflabel(treatment "\addlinespace[0.75em] Treatment")
-				stats(	  wyoung_pValue_brackets N r2_a control_mean control_sd provFE,
-				  lab(	  " " //blank space
-						  "\addlinespace[0.75em] Number of observations"
-						  "Adjusted R-squared"
-						  "\addlinespace[0.75em] Mean dep.\ var.\ control group"
-						  "SD dep.\ var.\ control group"
-						  "\addlinespace[0.75em] Province fixed effects")
-				  fmt(0 0 %9.3f %9.3f %9.3f)
-					 )
-				
-				b(%9.3f) se(%9.3f)
-				
-				 prehead("&\multicolumn{6}{c}{\textbf{Used:}}      														  &\multicolumn{6}{c}{\textbf{Costs}} 																	  \\ 	   "
-						 " \cmidrule(lr){2-7} \cmidrule(lr){8-13}"
-						 "&\multicolumn{2}{c}{Organic}    &\multicolumn{2}{c}{Chemical}   &\multicolumn{2}{c}{Pesticides} &\multicolumn{2}{c}{Organic}    &\multicolumn{2}{c}{Chemical}   &\multicolumn{2}{c}{Pesticides} \\ 	   "
-						 "&\multicolumn{2}{c}{fertilizer} &\multicolumn{2}{c}{fertilizer} &\multicolumn{2}{c}{}           &\multicolumn{2}{c}{fertilizer} &\multicolumn{2}{c}{fertilizer} &\multicolumn{2}{c}{} 	      \\ 	   "
-						 " \cmidrule(lr){2-3}		       \cmidrule(lr){4-5}			   \cmidrule(lr){6-7}			   \cmidrule(lr){8-9}			   \cmidrule(lr){10-11}            \cmidrule(lr){12-13}           	 	   "
-						 "&(1) 	 	   &(2) 	   	      &(3)  	   &(4)				  &(5)   	   &(6)               &(7)          &(8)  			  &(9)         &(10)              &(11)        &(12)  			  \\ \hline"
-						 )
-				postfoot("[0.25em] \hline \hline \\ [-1.8ex]")
-		;
-	#d	cr
-	
-	filefilter  "${out_tab}/todelete.tex" 			 	 ///
-				"${out_tab}/tabA06-hh_agri_inputs.tex" , ///
-				from("[1em]") to("") replace	
-	erase 		"${out_tab}/todelete.tex" 	
-	
-	di as text `"Open final file in LaTeX here: {browse "${out_tab}/tabA06-hh_agri_inputs.tex":${out_tab}/tabA06-hh_agri_inputs.tex}"'
-
 
 	#d	;
 		esttab  el_worker_costs     el_worker_costs_prov
@@ -352,6 +260,7 @@
 				
 				${esttabOptions}
 				
+				keep(	  treatment)
 				coeflabel(treatment "\addlinespace[0.75em] Treatment")
 				stats(	  wyoung_pValue_brackets N r2_a control_mean control_sd provFE,
 				  lab(	  " " //blank space
@@ -373,12 +282,12 @@
 		;
 	#d	cr
 	
-	filefilter  "${out_tab}/todelete.tex" 		   ///
-				"${out_tab}/tab07-hh_costs.tex" , ///
+	filefilter  "${out_tab}/todelete.tex" 		  ///
+				"${out_tab}/tabA11-hh_costs.tex" , ///
 				from("[1em]") to("") replace	
 	erase 		"${out_tab}/todelete.tex" 	
 	
-	di as text `"Open final file in LaTeX here: {browse "${out_tab}/tab07-hh_costs.tex":${out_tab}/tab07-hh_costs.tex}"'
+	di as text `"Open final file in LaTeX here: {browse "${out_tab}/tabA11-hh_costs_controls.tex":${out_tab}/tabA11-hh_costs_controls.tex}"'
 
 	
 ***************************** End of do-file ***********************************

@@ -1,7 +1,8 @@
 
 /*******************************************************************************
 *																 			   *
-* 	  "Private Consultants Promote Agricultural Investments in Mozambique"	   *
+* 	  				"Do Private Consultants Promote Savings					   *
+*					 and Investments in Rural Mozambique?"	  				   *
 *																			   *
 *				Average penalty outcomes in the treatment					   *
 *																 			   *
@@ -11,8 +12,8 @@
 		
 		REQUIRES:   	"${dt_fin}/PROIRRI Financial Literacy - Savings paper data.dta"
 						
-		CREATES:	   	Figure A2: Penalty Outcomes in Treated Schemes
-						"${out_tab}/figA02-penalty_outcomes.png"
+		CREATES:	   	Figure A4: Penalty Outcomes in Treated Schemes
+						"${out_tab}/figA04-penalty_outcomes.png"
 												
 * ---------------------------------------------------------------------------- */
 
@@ -61,7 +62,7 @@
 	#d	cr
 	
 	* Export figure in .PNG format
-	gr export "${out_fig}/figA02-hh_penalty_outcomes.png", width(5000) replace
+	gr export "${out_fig}/figA04-hh_penalty_outcomes.png", width(5000) replace
 	
 
 ******************************** End of do-file ********************************	

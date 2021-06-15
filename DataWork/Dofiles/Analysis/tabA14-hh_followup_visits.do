@@ -1,7 +1,8 @@
 
 /*******************************************************************************
 *																 			   *
-* 	  "Private Consultants Promote Agricultural Investments in Mozambique"	   *
+* 	  				"Do Private Consultants Promote Savings					   *
+*					 and Investments in Rural Mozambique?"	  				   *
 *																			   *
 *							Follow-up visits 								   *
 *																 			   *
@@ -11,8 +12,8 @@
 		
 		REQUIRES:   	"${dt_fin}/PROIRRI Financial Literacy - Savings paper data.dta"
 						
-		CREATES:	   	Table A13: Summary Statistics on Follow-Up Visits
-						"${out_tab}/tabA13-hh_followup_visits.tex"
+		CREATES:	   	Table A14: Summary Statistics on Follow-Up Visits
+						"${out_tab}/tabA14-hh_followup_visits.tex"
 														
 * ---------------------------------------------------------------------------- *
 *						Prepare data and definte variables			  	   	   *
@@ -23,7 +24,7 @@
 	
 	* Add vertical space before first variable
 	lab var el_visits "\addlinespace[0.75em] Knew of visit from the trainers"	//(5.19)	
-	
+			
 	* Clear estimates
 	est clear 
 	
@@ -39,7 +40,7 @@
 		;
 		
 		esttab  using
-			    "${out_tab}/tabA13-hh_followup_visits.tex"
+			    "${out_tab}/tabA14-hh_followup_visits.tex"
 				,
 				
 				replace
