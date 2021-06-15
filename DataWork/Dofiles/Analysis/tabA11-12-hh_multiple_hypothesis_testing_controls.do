@@ -282,8 +282,8 @@
 		;
 	#d	cr
 	
-	filefilter  "${out_tab}/todelete.tex" 		  ///
-				"${out_tab}/tabA11-hh_costs.tex" , ///
+	filefilter  "${out_tab}/todelete.tex" 				    ///
+				"${out_tab}/tabA11-hh_costs_controls.tex" , ///
 				from("[1em]") to("") replace	
 	erase 		"${out_tab}/todelete.tex" 	
 	
