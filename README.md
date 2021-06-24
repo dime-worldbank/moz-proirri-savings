@@ -10,7 +10,7 @@
 This repository contains the codes that replicate the figures and tables presented in the paper "Do Private Consultants Promote Savings and Investments in Rural Mozambique?" (2021) by Paul Christian, Steven Glover, Florence Kondylis, Valerie Mueller, Matteo Ruzzante and Astrid Zwager.
 
 ## Read First
-The whole analysis in the paper can be rerun by using the script `MAIN_proirri.do`, which is in the [Dofiles](https://github.com/dime-worldbank/moz-proirri-savings/tree/master/DataWork/Dofiles) subfolder. It is only necessary to add your computer's username and path to the cloned replication folder(s) in line 97-100 of such do-file in *PART 1*.
+The whole analysis in the paper can be rerun by using the script `MAIN_proirri.do`, which is in the [Dofiles](https://github.com/dime-worldbank/moz-proirri-savings/tree/master/DataWork/Dofiles) subfolder. It is only necessary to add your computer's username and path to the cloned replication folder(s) in line 94-96 of such do-file in *PART 1*.
 You can select which section(s) to run by editing the locals in the preamble of the do-file. Make sure to run the *packages* section &ndash; *PART 0* to install all necessary packages before running the other sections.
 
 The main script will take around a full day on a reasonable cluster. Without considering the do-files using bootstrapping replications (see section *Code Process* below), it would take around 3 minutes.

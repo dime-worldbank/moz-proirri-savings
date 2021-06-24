@@ -10,9 +10,9 @@ The lists and tables below describe how the variables used for the data anaysis 
 - `prov` is an indicator variable for the province strata
 - `associd` is the association identifier variable
 - `hhid` is the unique household identifier variable
-- `treatment` is a dummy variable equal to 1 if the association received follow-up visits from EY (the treatment)
-- `bl_attended` is a dummy variable equal to 1 if the household attended the financial literacy training
-- `data_endline` is a dummy variable equal to 1 if the household was interviewed in the endline survey
+- `treatment` is a dummy variable equal to 1 if the association received follow-up visits from EY (the treatment) and 0 if not (the control group)
+- `bl_attended` is a dummy variable equal to 1 if the household attended the financial literacy training and 0 otherwise
+- `data_endline` is a dummy variable equal to 1 if the household was interviewed in the endline survey and 0 otherwise
 - `pweight` is a numerical variable equal for the sampling weights, i.e., the inverse of the probability that the household was sampled for the endline survey, in each association
 
 &nbsp;
@@ -56,9 +56,10 @@ The lists and tables below describe how the variables used for the data anaysis 
 | `bp_vX_d_saved`	  	 | Household saved in quarter X, has some positive contribution in quarter X (`bp_vX_boxvalue` > 0)
 | `bp_vX_boxvalue_cumul` | Value of household saving contributions accumulated by quarter X
 | `bp_vX_d_saved_cumul`  | Household saved by quarter X (`bp_vX_boxvalue_cumul` > 0)
-| `bp_vX_boxvalue_ihs`   | Inverse hyperbolic sine transformation of household saving contributions in quarter X
 | `bp_vX_boxvalue_w95`   | Household saving contributions in quarter X winsorized at the 95th percentile
 | `bp_vX_boxvalue_t95`   | Household saving contributions in quarter X trimmed at the 95th percentile
+| `bp_vX_boxvalue_cumul_w95` | Household saving contributions accumulated by quarter X, winsorized at the 95th percentile
+| `bp_vX_boxvalue_cumul_t95` | Household saving contributions accumulated by quarter X, trimmed at the 95th percentile
 
 ### Total
 
@@ -69,6 +70,9 @@ The lists and tables below describe how the variables used for the data anaysis 
 | `bp_d_saved`	  	     | Household saved, i.e, has some positive contribution in one of the quarter (`bp_final_cont` > 0)
 | `bp_final_gap`         | Household saving gap from planned saving target (`bp_final_cont` - `bp_v0_target`)
 | `bp_d_saving_goal`     | Household reached saving goal (`bp_final_gap` < 0)
+| `bp_plan_update_diff`  | Total value of the update in the household saving plan
+| `bp_plan_update`       | Household updated the saving plan (`bp_plan_update_diff` != 0)
+
 
 &nbsp;
 
@@ -138,8 +142,6 @@ The lists and tables below describe how the variables used for the data anaysis 
 | `el_d_ownelecpump`     | Household owns an electrict pump                                                                    | 11.02                   |
 | `el_equip_rent_costs`  | Cost of equipment rent (in MZN)                                                                     | 11.03                   |
 
-- `el_wealth_index` is a composite index equal to the arithmetic sum of dummy variables (0/1) measuring ownership of non-productive durable assets. Namely, the household assets considered were oil lamp (question 2.01), radio (2.02), bicycle (2.03), latrine (2.04), table (2.05), cellphone (2.06), solar panel (2.07), motorbike (2.08), television (2.09), and fridge (2.10)
-- `el_shock_mean` is the share of households who were exposed to (at least) a shock in the association. Shocks considered are drought, flood, and cyclone (retrieved from questions 8.15b, 8.17, 8.56, 8.65, 9.10, and 10.05)
 - `el_penalty_mean` is the share of households who reported penalty outcomes in the association. Penalty outcomes considered are `el_visitconseq_1`, `el_visitconseq_2` and `el_visitconseq_3` (see table above)
 
 &nbsp;
