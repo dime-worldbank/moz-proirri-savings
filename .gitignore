@@ -64,6 +64,9 @@
 # Matlab
 !/**/*.m
 
+# LaTeX
+!/**/*.bib
+
 # Markdown
 !/**/*.md
 !/**/*.yml
