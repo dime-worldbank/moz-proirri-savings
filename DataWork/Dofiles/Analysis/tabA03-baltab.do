@@ -59,12 +59,23 @@
 	preserve
 		
 		* Collapse association-level variables
-		collapse `assocVars' , by(${assocIdVars})
+		collapse `assocVars' `bl_hhVars' `el_hhVars' , by(${assocIdVars})
 	
 		* Attach the saved labels
         foreach      v of var * {
             lab var `v' "`l`v''"
         }
+		
+		* Relabel averages at the association level
+		lab var bl_hhsize 	   "Pre-intervention household size, average"
+		lab var bl_rainfed_ha  "Pre-intervention rainfed land (ha), average"
+		
+		lab var el_headage 	   "Head of household’s age, average"
+		lab var el_headeduc    "Head of household’s education level, average"
+		lab var el_headgender  "Share of male heads of household"
+		lab var el_durroof	   "Share of houses that have durable roof" 
+		lab var el_durwalls	   "Share of houses that houses that have durable walls"
+		lab var el_savingstart "How much money household saved pre-intervention (MZN), average"
 		
 		* Run regression on subset of variables, which are not conditional
 		areg treatment 	  `assocVars2' , abs(prov) rob 
@@ -83,7 +94,7 @@
 		cap mat drop ri_pvalues
 		
 		* Loop on outcome variables
-		foreach var of local assocVars {
+		foreach var in `assocVars' `bl_hhVars' `el_hhVars' {
 			
 			* Compute randomization inference p-values
 			ritest treatment _b[treatment]	         			   , 			///
@@ -99,7 +110,7 @@
 		// ---------------------------
 		#d	;
 		
-			iebaltab `assocVars'
+			iebaltab `assocVars' `bl_hhVars' `el_hhVars'
 				,
 			    vce(robust) grpvar(treatment) fixedeffect(prov)
 				grplabels(1 Treatment @ 0 Control)

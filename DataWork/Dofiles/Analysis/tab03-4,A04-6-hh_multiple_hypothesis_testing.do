@@ -121,34 +121,31 @@
 	
 		foreach  var of global machineryItems {
 						
-			eststo	   `state'`var' 	 : reg	   el_d_`state'`var' treatment [pw=pweight], cl(associd)
+			if 		  "`state'`var'" != "ownelecpump" { //removing this variable from the estimatation as it could not be computed in absence of variation across treatment arm
 			
-			sum    						  		   el_d_`state'`var' if e(sample) == 1 & treatment == 0
-			estadd scalar control_mean  		 = r(mean)
-			estadd scalar control_sd    		 = r(sd)
-			estadd local 		 provFE  	""
-		
-			if 		  "`state'`var'" != "ownelecpump" { //removing this variable from the p-value as it could not be computed in absence of variation across treatment arm
-			
+				eststo	   `state'`var' 	 : reg	   el_d_`state'`var' treatment [pw=pweight], cl(associd)
+				
+				sum    						  		   el_d_`state'`var' if e(sample) == 1 & treatment == 0
+				estadd scalar control_mean  		 = r(mean)
+				estadd scalar control_sd    		 = r(sd)
+				estadd local 		 provFE  	""
+						
 				scalar 		  wyoung_pValue 	     = pValues[1, `matrixColCount']
 				local  		  wyoung_pValue_str      = string(wyoung_pValue, "%9.3f")
 				estadd local  wyoung_pValue_brackets = "[`wyoung_pValue_str']"
 				
 				local matrixColCount 	= `matrixColCount'    + 1
-			}
 			
-			eststo	   `state'`var'_prov : reghdfe el_d_`state'`var' treatment [pw=pweight], cl(associd) abs(prov)
-			
-			if 		  "`state'`var'" != "ownelecpump" { //removing this variable from the p-value as it could not be computed in absence of variation across treatment arm
-			
+				eststo	   `state'`var'_prov : reghdfe el_d_`state'`var' treatment [pw=pweight], cl(associd) abs(prov)
+				
+				estadd local 		 provFE  "\checkmark"
+				
 				scalar 		  wyoung_pValue 	     = pValues_FE[1,`matrixColCount_FE']
 				local  		  wyoung_pValue_str      = string(wyoung_pValue, "%9.3f")
 				estadd local  wyoung_pValue_brackets = "[`wyoung_pValue_str']"
 				
 				local matrixColCount_FE = `matrixColCount_FE' + 1
 			}
-			
-			estadd local 		 provFE  "\checkmark"
 		}
 		
 		#d	;
@@ -209,21 +206,30 @@
 *							Export formatted tables			  				   *
 * ---------------------------------------------------------------------------- *
 	
-	foreach  state in use own  {
-	
+	foreach  state  in  use own  {
+		
+		* Remove 'electric pump' column for mechanization ownership table:
+		* there is no variation in such variable across experimental arms, i.e.,
+		* no household owns an electric pump,
+		* neither in the control nor in the treatment group
+		if "`state'" == "use" {
+		
+			local extraColumn1 "&\multicolumn{2}{c}{Electric}"
+			local extraColumn2 "&\multicolumn{2}{c}{pump}"
+			local extraColumn3 " \cmidrule(lr){20-21}"
+			local extraColumn4 "&(19) &(20)"
+		}
+		
+		if "`state'" == "own" {
+		
+			local extraColumn1 ""
+			local extraColumn2 ""
+			local extraColumn3 ""
+			local extraColumn4 ""
+		}
+		
 		#d	;
-			esttab 	`state'cattle 		`state'cattle_prov 		
-					`state'traction		`state'traction_prov
-					`state'cart 		`state'cart_prov			  
-					`state'tractor		`state'tractor_prov
-					`state'plough		`state'plough_prov
-					`state'motocult		`state'motocult_prov
-					`state'seeder		`state'seeder_prov
-					`state'trailer		`state'trailer_prov
-					`state'motorpump  	`state'motorpump_prov
-					`state'elecpump		`state'elecpump_prov
-					
-					using "${out_tab}/todelete.tex",
+			esttab  `state'*  using "${out_tab}/todelete.tex",
 					
 					${esttabOptions}
 					
@@ -240,9 +246,11 @@
 					
 					b(%9.3f) se(%9.3f)
 					
-					 prehead("&(1) &(2) 	   			  &(3) &(4)	  				    &(5) &(6)                 &(7) &(8)		               &(9)	&(10) 	               &(11) &(12)                         &(13) &(14)                 &(15) &(16)                  &(17) &(18)                    &(19) &(20)                    \\       "
-							 "&\multicolumn{2}{c}{Cattle} &\multicolumn{2}{c}{Animal}   &\multicolumn{2}{c}{Cart} &\multicolumn{2}{c}{Tractor} &\multicolumn{2}{c}{Plough} &\multicolumn{2}{c}{Motocultivator} &\multicolumn{2}{c}{Seeder} &\multicolumn{2}{c}{Trailer} &\multicolumn{2}{c}{Motorpump} &\multicolumn{2}{c}{Electrict} \\       "
-							 "&	   &	 				  &\multicolumn{2}{c}{traction} &    &                    &    &			   	       & 	&                      & 	 &                             & &                         &     &                      &     &                        &\multicolumn{2}{c}{pump}	  \\ \hline")
+					 prehead("&\multicolumn{2}{c}{Cattle} &\multicolumn{2}{c}{Animal}   &\multicolumn{2}{c}{Cart} &\multicolumn{2}{c}{Tractor} &\multicolumn{2}{c}{Plough} &\multicolumn{2}{c}{Motocultivator} &\multicolumn{2}{c}{Seeder} &\multicolumn{2}{c}{Trailer} &\multicolumn{2}{c}{Motorpump} `extraColumn1' \\        "
+							 "&	   &	 				  &\multicolumn{2}{c}{traction} &    &                    &    &			   	       & 	&                      & 	 &                             &     &                         &     &                      &     &                    `extraColumn2' \\ 	    "
+							 " \cmidrule(lr){2-3}		   \cmidrule(lr){4-5}		     \cmidrule(lr){6-7}		   \cmidrule(lr){8-9}			\cmidrule(lr){10-11}		\cmidrule(lr){12-13}             	\cmidrule(lr){14-15}	    \cmidrule(lr){16-17}		 \cmidrule(lr){18-19}		   `extraColumn3' 	    	"
+							 "&(1) &(2) 	   			  &(3) &(4)	  				    &(5) &(6)                 &(7) &(8)		               &(9)	&(10) 	               &(11) &(12)                         &(13) &(14)                 &(15) &(16)                  &(17) &(18)                    `extraColumn4' \\ \hline "
+							)
 					postfoot("[0.25em] \hline \hline \\ [-1.8ex]")
 			;
 		#d	cr

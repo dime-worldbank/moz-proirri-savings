@@ -10,7 +10,7 @@
 	
 		WRITTEN BY:			Matteo Ruzzante [matteo.ruzzante@u.northwestern.edu]
 		
-		Last update on:		June 2021
+		Last update on:		July 2021
 						
 			PART 0: Settings
 			PART 1:	Folder paths

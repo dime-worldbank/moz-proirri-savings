@@ -112,35 +112,32 @@
 	foreach  state in use own  {
 	
 		foreach  var of global machineryItems {
-						
-			eststo	   `state'`var' 	 : reg	   el_d_`state'`var' treatment ${controlVars} [pw=pweight], cl(associd)
 			
-			sum    						  		   el_d_`state'`var' if e(sample) == 1 & treatment == 0
-			estadd scalar control_mean  		 = r(mean)
-			estadd scalar control_sd    		 = r(sd)
-			estadd local 		 provFE  	""
-		
-			if 		  "`state'`var'" != "ownelecpump" { //removing this variable from the p-value as it could not be computed in absence of variation across treatment arm
+			if 		  "`state'`var'" != "ownelecpump" {
+			
+				eststo	   `state'`var' 	 : reg	   el_d_`state'`var' treatment ${controlVars} [pw=pweight], cl(associd)
+				
+				sum    						  		   el_d_`state'`var' if e(sample) == 1 & treatment == 0
+				estadd scalar control_mean  		 = r(mean)
+				estadd scalar control_sd    		 = r(sd)
+				estadd local  provFE  				   ""
 			
 				scalar 		  wyoung_pValue 	     = pValues[1, `matrixColCount']
 				local  		  wyoung_pValue_str      = string(wyoung_pValue, "%9.3f")
 				estadd local  wyoung_pValue_brackets = "[`wyoung_pValue_str']"
-				
+					
 				local matrixColCount 	= `matrixColCount'    + 1
-			}
-			
-			eststo	   `state'`var'_prov : reghdfe el_d_`state'`var' treatment ${controlVars} [pw=pweight], cl(associd) abs(prov)
-			
-			if 		  "`state'`var'" != "ownelecpump" { //removing this variable from the p-value as it could not be computed in absence of variation across treatment arm
-			
+							
+				eststo	   `state'`var'_prov : reghdfe el_d_`state'`var' treatment ${controlVars} [pw=pweight], cl(associd) abs(prov)
+				
+				estadd local  provFE  				   "\checkmark"
+				
 				scalar 		  wyoung_pValue 	     = pValues_FE[1,`matrixColCount_FE']
 				local  		  wyoung_pValue_str      = string(wyoung_pValue, "%9.3f")
 				estadd local  wyoung_pValue_brackets = "[`wyoung_pValue_str']"
 				
 				local matrixColCount_FE = `matrixColCount_FE' + 1
 			}
-			
-			estadd local 		 provFE  "\checkmark"
 		}
 		
 		#d	;
@@ -202,53 +199,52 @@
 *							Export formatted tables			  				   *
 * ---------------------------------------------------------------------------- *
 	
-	foreach  state in use /*own*/ {
+	#d	;
+		esttab 	usecattle 		usecattle_prov 		
+				usetraction		usetraction_prov
+				usecart 		usecart_prov			  
+				usetractor		usetractor_prov
+				useplough		useplough_prov
+				usemotocult		usemotocult_prov
+				useseeder		useseeder_prov
+				usetrailer		usetrailer_prov
+				usemotorpump  	usemotorpump_prov
+				useelecpump		useelecpump_prov
+				
+				using "${out_tab}/todelete.tex",
+				
+				${esttabOptions}
+				
+				keep(	  treatment)
+				coeflabel(treatment "\addlinespace[0.75em] Treatment")
+				stats(	  wyoung_pValue_brackets N r2_a control_mean control_sd provFE,
+				  lab(	  " " //blank space
+						  "\addlinespace[0.75em] Number of observations"
+						  "Adjusted R-squared"
+						  "\addlinespace[0.75em] Mean dep.\ var.\ control group"
+						  "SD dep.\ var.\ control group"
+						  "\addlinespace[0.75em] Province fixed effects")
+				  fmt(0 0 %9.3f %9.3f %9.3f)
+					 )
+				
+				b(%9.3f) se(%9.3f)
+				
+				 prehead("&\multicolumn{2}{c}{Cattle} &\multicolumn{2}{c}{Animal}   &\multicolumn{2}{c}{Cart} &\multicolumn{2}{c}{Tractor} &\multicolumn{2}{c}{Plough} &\multicolumn{2}{c}{Motocultivator} &\multicolumn{2}{c}{Seeder} &\multicolumn{2}{c}{Trailer} &\multicolumn{2}{c}{Motorpump} &\multicolumn{2}{c}{Electric} \\       "
+						 "&	   &	 				  &\multicolumn{2}{c}{traction} &    &                    &    &			   	       & 	&                      & 	 &                             &     &                     &     &                      &     &                        &\multicolumn{2}{c}{pump}	 \\       "
+						 " \cmidrule(lr){2-3}		   \cmidrule(lr){4-5}		     \cmidrule(lr){6-7}		   \cmidrule(lr){8-9}			\cmidrule(lr){10-11}		\cmidrule(lr){12-13}             	\cmidrule(lr){14-15}	    \cmidrule(lr){16-17}		 \cmidrule(lr){18-19}			\cmidrule(lr){20-21}				  "
+						 "&(1) &(2) 	   			  &(3) &(4)	  				    &(5) &(6)                 &(7) &(8)		               &(9)	&(10) 	               &(11) &(12)                         &(13) &(14)                 &(15) &(16)                  &(17) &(18)                    &(19) &(20)                   \\ \hline")
+				postfoot("[0.25em] \hline \hline \\ [-1.8ex]")
+		;
+	#d	cr
+			
+	filefilter  "${out_tab}/todelete.tex" 							   	///
+				"${out_tab}/tabA12-hh_use_mechanization_controls.tex" , ///
+				from("[1em]") to("") replace	
+	erase 		"${out_tab}/todelete.tex"
 	
-		#d	;
-			esttab 	`state'cattle 		`state'cattle_prov 		
-					`state'traction		`state'traction_prov
-					`state'cart 		`state'cart_prov			  
-					`state'tractor		`state'tractor_prov
-					`state'plough		`state'plough_prov
-					`state'motocult		`state'motocult_prov
-					`state'seeder		`state'seeder_prov
-					`state'trailer		`state'trailer_prov
-					`state'motorpump  	`state'motorpump_prov
-					`state'elecpump		`state'elecpump_prov
-					
-					using "${out_tab}/todelete.tex",
-					
-					${esttabOptions}
-					
-					keep(	  treatment)
-					coeflabel(treatment "\addlinespace[0.75em] Treatment")
-					stats(	  wyoung_pValue_brackets N r2_a control_mean control_sd provFE,
-					  lab(	  " " //blank space
-							  "\addlinespace[0.75em] Number of observations"
-							  "Adjusted R-squared"
-							  "\addlinespace[0.75em] Mean dep.\ var.\ control group"
-							  "SD dep.\ var.\ control group"
-							  "\addlinespace[0.75em] Province fixed effects")
-					  fmt(0 0 %9.3f %9.3f %9.3f)
-						 )
-					
-					b(%9.3f) se(%9.3f)
-					
-					 prehead("&(1) &(2) 	   			  &(3) &(4)	  				    &(5) &(6)                 &(7) &(8)		               &(9)	&(10) 	               &(11) &(12)                         &(13) &(14)                 &(15) &(16)                  &(17) &(18)                    &(19) &(20)                    \\       "
-							 "&\multicolumn{2}{c}{Cattle} &\multicolumn{2}{c}{Animal}   &\multicolumn{2}{c}{Cart} &\multicolumn{2}{c}{Tractor} &\multicolumn{2}{c}{Plough} &\multicolumn{2}{c}{Motocultivator} &\multicolumn{2}{c}{Seeder} &\multicolumn{2}{c}{Trailer} &\multicolumn{2}{c}{Motorpump} &\multicolumn{2}{c}{Electrict} \\       "
-							 "&	   &	 				  &\multicolumn{2}{c}{traction} &    &                    &    &			   	       & 	&                      & 	 &                             & &                         &     &                      &     &                        &\multicolumn{2}{c}{pump}	  \\ \hline")
-					postfoot("[0.25em] \hline \hline \\ [-1.8ex]")
-			;
-		#d	cr
-		
-		if "`state'" == "use" local tabNumber "A12"
-		
-		filefilter  "${out_tab}/todelete.tex" 							   	   			///
-					"${out_tab}/tab`tabNumber'-hh_`state'_mechanization_controls.tex" , ///
-					from("[1em]") to("") replace	
-		erase 		"${out_tab}/todelete.tex"
-	}
-
+	di as text `"Open final file in LaTeX here: {browse "${out_tab}/tabA12-hh_use_mechanization_controls.tex":${out_tab}/tabA12-hh_use_mechanization_controls.tex}"'
+	
+	
 	#d	;
 		esttab  el_worker_costs     el_worker_costs_prov
 				  el_seed_costs       el_seed_costs_prov

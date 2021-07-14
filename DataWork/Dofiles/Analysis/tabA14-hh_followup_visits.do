@@ -23,8 +23,17 @@
 	use 	"${dt_fin}/PROIRRI Financial Literacy - Savings paper data.dta" , clear
 	
 	* Add vertical space before first variable
-	lab var el_visits "\addlinespace[0.75em] Knew of visit from the trainers"	//(5.19)	
-			
+	lab var el_visits "\addlinespace[0.75em] Knew of visit from the trainers"	//(5.19)
+	
+	* Add footnote dag after labels of questions that were only asked
+	* "conditional on attending at least one meeting."
+	foreach var in el_visitgoals el_visitreview el_visitupdate el_visituseful 	///
+				   el_helpfultreat_12 {											
+		
+		local varLab : var lab `var'
+		lab var `var' "`varLab'†"
+	}
+	
 	* Clear estimates
 	est clear 
 	

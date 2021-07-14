@@ -20,18 +20,25 @@
 	* Load data
 	use   "${dt_fin}/PROIRRI Financial Literacy - Savings paper data.dta" , clear
 	
+	* Turn control variables into average at the association level
+	foreach     var of global assoc_controlVars {
+		
+		rename `var' 	    `var'_aux
+		egen   `var' = mean(`var'_aux), by(associd)
+	}
+	
 	* Estimate regression on saving dummy with and without province fixed effects for each quarter
 	est clear
 	
 	forv  quarter = 1/4 {
 			
-		eststo 	   v`quarter' 	   	 : reg	   bp_v`quarter'_d_saved_cumul treatment ${controlVars}, cl(associd)
+		eststo 	   v`quarter' 	   	 : reg	   bp_v`quarter'_d_saved_cumul treatment ${assoc_controlVars} , cl(associd)
 		sum    						  		   bp_v`quarter'_d_saved_cumul if e(sample) == 1 & treatment == 0
 		estadd scalar control_mean 		= r(mean)
 		estadd scalar control_sd   		= r(sd)
 		estadd local 		  provFE 	  ""
 		
-		eststo	   v`quarter'_prov   : reghdfe bp_v`quarter'_d_saved_cumul treatment ${controlVars}, cl(associd) abs(prov)
+		eststo	   v`quarter'_prov   : reghdfe bp_v`quarter'_d_saved_cumul treatment ${assoc_controlVars} , cl(associd) abs(prov)
 		estadd     local 	  provFE "\checkmark"
 	}
 	
@@ -69,13 +76,13 @@
 	
 	forv  quarter = 1/4 {
 		
-		eststo 	    v`quarter' 	   	    : reg	  bp_v`quarter'_boxvalue_cumul treatment ${controlVars}, cl(associd)
+		eststo 	    v`quarter' 	   	    : reg	  bp_v`quarter'_boxvalue_cumul treatment ${assoc_controlVars} , cl(associd)
 		sum    						  			  bp_v`quarter'_boxvalue_cumul if e(sample) == 1 & treatment == 0
 		estadd scalar control_mean 		= r(mean)
 		estadd scalar control_sd   		= r(sd)
 		estadd local 		   provFE 	  ""
 	
-		eststo	    v`quarter'_prov     : reghdfe bp_v`quarter'_boxvalue_cumul treatment ${controlVars}, cl(associd) abs(prov)
+		eststo	    v`quarter'_prov     : reghdfe bp_v`quarter'_boxvalue_cumul treatment ${assoc_controlVars} , cl(associd) abs(prov)
 		estadd      local 	   provFE 	  "\checkmark"
 	}
 	
