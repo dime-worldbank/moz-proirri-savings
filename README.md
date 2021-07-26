@@ -7,14 +7,14 @@
 
 # Replication Package for "Do Private Consultants Promote Savings and Investments in Rural Mozambique?"
 
-This repository contains the codes that replicate the figures and tables presented in the paper "Do Private Consultants Promote Savings and Investments in Rural Mozambique?" by Paul Christian, Steven Glover, Florence Kondylis, Valerie Mueller, Matteo Ruzzante and Astrid Zwager, forthcoming in *Agricultural Economics*.
+This repository contains the data and codes that replicate the figures and tables presented in the paper "Do Private Consultants Promote Savings and Investments in Rural Mozambique?" by Paul Christian, Steven Glover, Florence Kondylis, Valerie Mueller, Matteo Ruzzante and Astrid Zwager, forthcoming in *Agricultural Economics*.
 </br>
 <details title="show abstract">
 <summary>
 <b>[Abstract]</b>,
-</a> <a rel="license" href="" title="go to paper">[Published Paper]</a>,
-</a> <a rel="license" href="" title="go to appendix">[Online Appendix]</a>,
-</a> <a rel="license" href="https://github.com/dime-worldbank/moz-proirri-savings/blob/master/Christian_etal_2021_AgEcon.bib" title="cite">[BibTeX]</a>
+</a> <a href="" title="go to paper">[Published Paper]</a>,
+</a> <a href="" title="go to appendix">[Online Appendix]</a>,
+</a> <a href="https://github.com/dime-worldbank/moz-proirri-savings/blob/master/Christian_etal_2021_AgEcon.bib" title="cite">[BibTeX]</a>
 </summary>
 Advice from management professionals can help small- and medium-sized firms reach complex financial goals in the Global South. We apply lessons learned in the firm literature to determine the degree in which farmer associations face constraints to management and planning capacity that can be alleviated by the provision of advice from external consultants. In particular, we conducted a randomized control trial in 42 water user associations (WUAs) in Mozambique to examine whether more intensive attention from financial consultants through repeated follow-up visits prompts households to save and invest in agricultural equipment. All WUAs received a financial literacy training and were eligible to receive a matching grant. Twenty-one WUAs were randomized into the treatment group that additionally were visited by private consultants quarterly, who tailored their advice to meet individuals’ own savings and investment objectives. We find the follow-up visits increase ‘hidden savings’ in the form of new capital investments on farmers’ own account. Thus, the visits may have changed savings’ habits by leading farmers to invest in technologies that were not directly subsidized. Our ability to detect an additional effect on the type of investments farmers targeted through the matching grant and, hence, the savings for the respective investments is limited given the power of our study design. Although the proportion of households saving increased, the intervention was likely less cost-effective than other modalities aimed to enhance the proclivity to save.
 </details>
@@ -53,7 +53,7 @@ The survey instrument is also available in Portuguese [here](https://github.com/
 
 ##  Code Process
 The name of the do-files, which are run by the principal script `MAIN_proirri.do`, corresponds to the `.tex` or `.png` file to be created in the output folder, with the exception of `tab03-4,A04-6-hh_multiple_hypothesis_testing.do` and `tabA11-12-hh_multiple_hypothesis_testing_controls.do`.
-The latter do-files estimate the program impact on secondary outcomes from household survey data, such as mechanization use and ownership, credit, input use and other costs. These variables were not part of our pre-analysis plan for the experiment filed in the [AEA RCT Registry](https://www.socialscienceregistry.org/trials/937) as "Group Interventions for Agricultural Transformation in Mozambique" (RCT ID: AEARCTR-0000937) [[BibTeX]]("https://github.com/dime-worldbank/moz-proirri-savings/blob/master/Christian_etal_2015_PAP.bib), and therefore we adjust the p-values for family-wise error rate using the free step-down procedure by Westfall and Young (1993).
+The latter do-files estimate the program impact on secondary outcomes from household survey data, such as mechanization use and ownership, credit, input use and other costs. These variables were not part of our pre-analysis plan for the experiment filed in the [AEA RCT Registry](https://www.socialscienceregistry.org/trials/937) as "Group Interventions for Agricultural Transformation in Mozambique" (RCT ID: AEARCTR-0000937) </a> <a href="https://github.com/dime-worldbank/moz-proirri-savings/blob/master/Christian_etal_2015_PAP.bib">[BibTeX]</a>, and therefore we adjust the p-values for family-wise error rate using the free step-down procedure by Westfall and Young (1993).
 
 All do-files use the final dataset, `PROIRRI Financial Literacy - Savings paper data.dta`.
 All tables and figures were included &ndash; without further editing &ndash; in the TeX document containing the current version of the paper.
