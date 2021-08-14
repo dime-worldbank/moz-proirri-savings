@@ -7,13 +7,13 @@
 
 # Replication Package for "Do Private Consultants Promote Savings and Investments in Rural Mozambique?"
 
-This repository contains the data and codes that replicate the figures and tables presented in the paper "Do Private Consultants Promote Savings and Investments in Rural Mozambique?" by Paul Christian, Steven Glover, Florence Kondylis, Valerie Mueller, Matteo Ruzzante and Astrid Zwager, forthcoming in *Agricultural Economics*.
+This repository contains the data and codes that replicate the figures and tables presented in the paper "Do Private Consultants Promote Savings and Investments in Rural Mozambique?" by Paul Christian, Steven Glover, Florence Kondylis, Valerie Mueller, Matteo Ruzzante and Astrid Zwager, forthcoming in *Agricultural Economics* (Journal of the International Association of Agricultural Economists).
 </br>
 <details title="show abstract">
 <summary>
 <b>[Abstract]</b>,
-</a> <a href="" title="go to paper">[Published Paper]</a>,
-</a> <a href="" title="go to appendix">[Online Appendix]</a>,
+</a> <a href="https://onlinelibrary.wiley.com/doi/10.1111/agec.12672" title="go to paper">[Published Paper]</a>,
+</a> <a href="https://onlinelibrary.wiley.com/action/downloadSupplement?doi=10.1111%2Fagec.12672&file=agec12672-sup-0001-Appendix.pdf" title="go to appendix">[Online Appendix]</a>,
 </a> <a href="https://github.com/dime-worldbank/moz-proirri-savings/blob/master/Christian_etal_2021_AgEcon.bib" title="cite">[BibTeX]</a>
 </summary>
 Advice from management professionals can help small- and medium-sized firms reach complex financial goals in the Global South. We apply lessons learned in the firm literature to determine the degree in which farmer associations face constraints to management and planning capacity that can be alleviated by the provision of advice from external consultants. In particular, we conducted a randomized control trial in 42 water user associations (WUAs) in Mozambique to examine whether more intensive attention from financial consultants through repeated follow-up visits prompts households to save and invest in agricultural equipment. All WUAs received a financial literacy training and were eligible to receive a matching grant. Twenty-one WUAs were randomized into the treatment group that additionally were visited by private consultants quarterly, who tailored their advice to meet individuals’ own savings and investment objectives. We find the follow-up visits increase ‘hidden savings’ in the form of new capital investments on farmers’ own account. Thus, the visits may have changed savings’ habits by leading farmers to invest in technologies that were not directly subsidized. Our ability to detect an additional effect on the type of investments farmers targeted through the matching grant and, hence, the savings for the respective investments is limited given the power of our study design. Although the proportion of households saving increased, the intervention was likely less cost-effective than other modalities aimed to enhance the proclivity to save.
